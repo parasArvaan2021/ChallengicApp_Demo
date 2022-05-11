@@ -23,7 +23,7 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
         setContentView(R.layout.activity_progress_bar)
         multiProgress = findViewById(R.id.multiProgress)
         viewPager = findViewById(R.id.viewPager)
-        viewForward= findViewById(R.id.viewForward)
+        viewForward = findViewById(R.id.viewForward)
         viewBackward = findViewById(R.id.viewBackward)
 
 
@@ -37,14 +37,14 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
         multiProgress.setProgressStepsCount(images.size)
         multiProgress.start(0)
 
-        viewPager.adapter = ImageSliderAdapter(this,images)
+        viewPager.adapter = ImageSliderAdapter(this, images)
         viewPager()
         multiProgress.setListener(this)
         multiProgress.setFinishListener(this)
 
     }
 
-    private fun viewPager(){
+    private fun viewPager() {
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             // This method is triggered when there is any scrolling activity for the current page
             override fun onPageScrolled(
@@ -55,19 +55,24 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
 
                 viewForward.setOnClickListener {
-                    Log.e("TAG", "onPageScrolled: $position==${multiProgress.getProgressStepsCount()}")
-                    if (position+1==multiProgress.getProgressStepsCount()){
-                       finish()
-                    }else{
-                        viewPager.setCurrentItem(position+1,true)
-                        multiProgress.next()
+                    Log.e(
+                        "TAG",
+                        "onPageScrolled: $position==${multiProgress.getProgressStepsCount()}"
+                    )
+                    if (position + 1 == multiProgress.getProgressStepsCount()) {
+                        finish()
+                    } else {
+                        Log.e("TAG", "else: ${multiProgress.getCurrentStep()}")
+                        viewPager.setCurrentItem(position + 1, true)
+                        if (multiProgress.getCurrentStep() < multiProgress.getProgressStepsCount() - 1)
+                            multiProgress.next()
                     }
 
                 }
                 viewBackward.setOnClickListener {
-                    viewPager.setCurrentItem(position-1,true)
+                    viewPager.setCurrentItem(position - 1, true)
                     multiProgress.previous()
-                    multiProgress.start(position-1)
+                    multiProgress.start(position - 1)
                 }
 
             }
@@ -88,8 +93,8 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
 
     override fun onProgressStepChange(newStep: Int) {
         Log.e("TAG", "onProgressStepChange: ")
-        if (newStep==multiProgress.getProgressStepsCount()) {
-          multiProgress.clear()
+        if (newStep == multiProgress.getProgressStepsCount()) {
+            multiProgress.clear()
 
         }
         multiProgress.setSingleDisplayTime(multiProgress.getSingleDisplayTime() + 1F)
