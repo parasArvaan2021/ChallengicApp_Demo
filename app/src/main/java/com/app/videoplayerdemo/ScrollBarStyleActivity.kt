@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.videoplayerdemo.adapter.RecyclerAdapter
 
 class ScrollBarStyleActivity : AppCompatActivity() {
 
@@ -14,7 +15,7 @@ class ScrollBarStyleActivity : AppCompatActivity() {
 
         rvData=findViewById(R.id.rvData)
         rvData.layoutManager=LinearLayoutManager(this)
-        rvData.adapter=RecyclerAdapter(this)
+        rvData.adapter= RecyclerAdapter(this)
         rvData.setHasFixedSize(true)
     }
 }

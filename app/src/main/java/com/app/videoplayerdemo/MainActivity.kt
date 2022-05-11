@@ -12,13 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.genius.multiprogressbar.MultiProgressBar
 
 
-class MainActivity : AppCompatActivity(),MultiProgressBar.ProgressStepChangeListener,MultiProgressBar.ProgressFinishListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var btnPickVideo: Button
     private lateinit var imageView: ImageView
     private lateinit var btnFlipImage: Button
     private lateinit var showBottomSheet: Button
-    private lateinit var multiProgress: MultiProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +28,12 @@ class MainActivity : AppCompatActivity(),MultiProgressBar.ProgressStepChangeList
         imageView = findViewById(R.id.image)
         btnFlipImage = findViewById(R.id.btnFlipImage)
         showBottomSheet = findViewById(R.id.showBottomSheet)
-        multiProgress = findViewById(R.id.multiProgress)
-
-        multiProgress.setListener(this)
-        multiProgress.setFinishListener(this)
-
         findViewById<Button>(R.id.rvScrollBarStyle).setOnClickListener {
             startActivity(Intent(this, ScrollBarStyleActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btnStartProgress).setOnClickListener {
+            startActivity(Intent(this, ProgressBarActivity::class.java))
         }
 
 
@@ -82,11 +80,4 @@ class MainActivity : AppCompatActivity(),MultiProgressBar.ProgressStepChangeList
             }
         }
 
-    override fun onProgressStepChange(newStep: Int) {
-        Log.e("STEP", "Current step is $newStep")
-    }
-
-    override fun onProgressFinished() {
-        Log.e("PROGRESS", "Progress finished")
-    }
 }

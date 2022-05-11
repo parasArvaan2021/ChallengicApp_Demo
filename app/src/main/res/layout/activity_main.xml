@@ -7,18 +7,6 @@
     tools:context=".MainActivity">
 
 
-    <com.genius.multiprogressbar.MultiProgressBar
-        android:id="@+id/multiProgress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:progressLineColor="@color/warm_grey"
-        app:progressColor="@color/colorAccent"
-        app:progressSteps="9"
-        android:layout_marginBottom="10dp"
-        app:progressSingleDisplayedTime="5.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/image"/>
 
     <Button
         android:id="@+id/btnPickVideo"
@@ -67,6 +55,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnFlipImage"/>
+
+    <Button
+        android:id="@+id/btnStartProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Progress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvScrollBarStyle"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VideoPlayerDemo">
         <activity
+            android:name=".ProgressBarActivity"
+            android:exported="false" />
+        <activity
             android:name=".ScrollBarStyleActivity"
             android:exported="false" />
         <activity

@@ -16,7 +16,7 @@
         tools:listitem="@layout/item_list_data"
         android:scrollbars="vertical"
         android:scrollbarStyle="insideInset"
-        android:overScrollMode="always"
+        android:overScrollMode="never"
         android:scrollIndicators="top"
         android:scrollbarSize="5dp"
         android:scrollbarTrackVertical="@drawable/scrollbar_track_style"
