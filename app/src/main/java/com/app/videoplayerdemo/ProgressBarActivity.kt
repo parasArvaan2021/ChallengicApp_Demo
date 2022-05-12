@@ -1,23 +1,26 @@
 package com.app.videoplayerdemo
 
-
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.app.videoplayerdemo.adapter.ImageSliderAdapter
+import com.app.videoplayerdemo.interf.VideoPlayerPrepareInterface
 import com.genius.multiprogressbar.MultiProgressBar
 
-
 class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepChangeListener,
-    MultiProgressBar.ProgressFinishListener {
+    MultiProgressBar.ProgressFinishListener, VideoPlayerPrepareInterface {
 
     private lateinit var multiProgress: MultiProgressBar
     private lateinit var viewPager: ViewPager2
     private lateinit var viewForward: View
     private lateinit var viewBackward: View
+    private lateinit var videoUrl: ArrayList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_progress_bar)
@@ -34,10 +37,17 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
             R.drawable.sinchan_four,
             R.drawable.shinchan
         )
-        multiProgress.setProgressStepsCount(images.size)
-        multiProgress.start(0)
 
-        viewPager.adapter = ImageSliderAdapter(this, images)
+        videoUrl = arrayListOf(
+            "http://embed.wistia.com/deliveries/ed7812225af6363e03f1fd59eb4e9902.bin",
+            "http://embed.wistia.com/deliveries/74826cac48bf0b9225e41a1de12652bd.bin",
+            "http://embed.wistia.com/deliveries/74826cac48bf0b9225e41a1de12652bd.bin",
+            "http://embed.wistia.com/deliveries/25e5b8b4fde06afbbca11cea0caaca80.bin"
+
+        )
+
+        multiProgress.setProgressStepsCount(videoUrl.size)
+
         viewPager()
         multiProgress.setListener(this)
         multiProgress.setFinishListener(this)
@@ -45,8 +55,10 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
     }
 
     private fun viewPager() {
+        val adapter = ImageSliderAdapter(this, videoUrl, this)
+        viewPager.adapter = adapter
+
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-            // This method is triggered when there is any scrolling activity for the current page
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -54,37 +66,14 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
             ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
 
-                viewForward.setOnClickListener {
-                    Log.e(
-                        "TAG",
-                        "onPageScrolled: $position==${multiProgress.getProgressStepsCount()}"
-                    )
-                    if (position + 1 == multiProgress.getProgressStepsCount()) {
-                        finish()
-                    } else {
-                        Log.e("TAG", "else: ${multiProgress.getCurrentStep()}")
-                        viewPager.setCurrentItem(position + 1, true)
-                        if (multiProgress.getCurrentStep() < multiProgress.getProgressStepsCount() - 1)
-                            multiProgress.next()
-                    }
-
-                }
-                viewBackward.setOnClickListener {
-                    viewPager.setCurrentItem(position - 1, true)
-                    multiProgress.previous()
-                    multiProgress.start(position - 1)
-                }
-
+                clickListnerViewPager(position)
             }
 
-            // triggered when you select a new page
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
             }
 
-            // triggered when there is
-            // scroll state will be changed
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
             }
@@ -97,7 +86,7 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
             multiProgress.clear()
 
         }
-        multiProgress.setSingleDisplayTime(multiProgress.getSingleDisplayTime() + 1F)
+        multiProgress.setSingleDisplayTime(33F)
         viewPager.currentItem = newStep
 
     }
@@ -105,5 +94,30 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
     override fun onProgressFinished() {
         Log.e("TAG", "onProgressFinished: ")
         finish()
+    }
+
+    override fun videoPlayerPrepareOrNot(position: Int) {
+        multiProgress.start(position)
+    }
+
+    fun clickListnerViewPager(position: Int) {
+        viewForward.setOnClickListener {
+            multiProgress.pause()
+            if (position + 1 == multiProgress.getProgressStepsCount()) {
+                finish()
+            } else {
+                viewPager.setCurrentItem(position + 1, true)
+                if (multiProgress.getCurrentStep() < multiProgress.getProgressStepsCount() - 1) {
+                    multiProgress.next()
+                }
+
+            }
+
+        }
+        viewBackward.setOnClickListener {
+            multiProgress.pause()
+            viewPager.setCurrentItem(position - 1, true)
+            multiProgress.previous()
+        }
     }
 }

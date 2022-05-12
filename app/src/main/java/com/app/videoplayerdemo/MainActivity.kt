@@ -9,7 +9,11 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.genius.multiprogressbar.MultiProgressBar
+import com.lassi.common.utils.KeyUtils
+import com.lassi.data.media.MiMedia
+import com.lassi.domain.media.LassiOption
+import com.lassi.domain.media.MediaType
+import com.lassi.presentation.builder.Lassi
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,14 +45,17 @@ class MainActivity : AppCompatActivity() {
             imageView.rotation = imageView.rotation + 90f
         }
         btnPickVideo.setOnClickListener {
-            val intent = Intent()
-            intent.type = "video/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            resultLauncher.launch(
-                Intent.createChooser(intent, "Select Video")
-            )
-        }
 
+//            val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+//            intent.type = "video/*"
+//            intent.putExtra("android.intent.extra.durationLimit", 30);
+//            resultLauncher.launch(
+//                Intent.createChooser(intent, "Select Video")
+//            )
+
+            pickVideo()
+
+        }
         showBottomSheet.setOnClickListener {
             val bottomSheet = BottomSheetDialog()
             bottomSheet.show(
@@ -57,6 +64,23 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+    }
+
+
+    private fun pickVideo() {
+        val intent = Lassi(this)
+            .with(LassiOption.CAMERA_AND_GALLERY)
+            .setMediaType(MediaType.VIDEO)
+            .setMaxTime(30)
+            .setGridSize(3)
+            .setStatusBarColor(R.color.colorPrimaryDark)
+            .setToolbarResourceColor(R.color.colorPrimary)
+            .setProgressBarColor(R.color.colorAccent)
+            .setSupportedFileTypes("mp4", "mkv", "webm", "avi", "flv", "3gp")
+            .build()
+        receiveData.launch(
+            intent
+        )
     }
 
 
@@ -76,6 +100,23 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("path", selectedImageUri.toString())
                     startActivity(intent)
 
+                }
+            }
+        }
+
+    private val receiveData =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val selectedMedia =
+                    it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
+                if (!selectedMedia.isNullOrEmpty()) {
+                    Log.e("TAG", "pickVideo:$selectedMedia ")
+                    val intent = Intent(
+                        this,
+                        VideoPlayerActivity::class.java
+                    )
+                    intent.putExtra("path", selectedMedia[0].path.toString())
+                    startActivity(intent)
                 }
             }
         }

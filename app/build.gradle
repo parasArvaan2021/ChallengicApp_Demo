@@ -42,14 +42,23 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
+//    implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
 
+    //story progressbar
     implementation "io.github.geniusrus:multiprogressbar:1.4.0"
 
+
+    //doc picker
+    implementation 'com.github.Mindinventory:Lassi:0.4.0'
 
 
     // Gilde
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //videoplayer
+    implementation 'com.github.HamidrezaAmz:MagicalExoPlayer:2.0.7'
+
+
 
 }

@@ -19,9 +19,7 @@
         <activity
             android:name=".ScrollBarStyleActivity"
             android:exported="false" />
-        <activity
-            android:name=".StorisActivity2"
-            android:exported="true" />
+
         <activity
             android:name=".VideoPlayerActivity"
             android:exported="true" />
