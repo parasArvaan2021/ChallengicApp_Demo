@@ -1,8 +1,6 @@
 package com.app.videoplayerdemo
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -29,32 +27,25 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
         viewForward = findViewById(R.id.viewForward)
         viewBackward = findViewById(R.id.viewBackward)
 
-
-        val images = intArrayOf(
-            R.drawable.sinchan_one,
-            R.drawable.sinchan_two,
-            R.drawable.sinchan_three,
-            R.drawable.sinchan_four,
-            R.drawable.shinchan
-        )
-
         videoUrl = arrayListOf(
             "http://embed.wistia.com/deliveries/ed7812225af6363e03f1fd59eb4e9902.bin",
+            "http://embed.wistia.com/deliveries/ed7812225af6363e03f1fd59eb4e9902.bin",
             "http://embed.wistia.com/deliveries/74826cac48bf0b9225e41a1de12652bd.bin",
+            "https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg",
             "http://embed.wistia.com/deliveries/74826cac48bf0b9225e41a1de12652bd.bin",
-            "http://embed.wistia.com/deliveries/25e5b8b4fde06afbbca11cea0caaca80.bin"
-
+            "http://embed.wistia.com/deliveries/25e5b8b4fde06afbbca11cea0caaca80.bin",
+            "https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
         )
 
-        multiProgress.setProgressStepsCount(videoUrl.size)
-
+        clickListenerViewPager()
         viewPager()
-        multiProgress.setListener(this)
-        multiProgress.setFinishListener(this)
-
     }
 
     private fun viewPager() {
+        multiProgress.setProgressStepsCount(videoUrl.size)
+        multiProgress.setListener(this)
+        multiProgress.setFinishListener(this)
+
         val adapter = ImageSliderAdapter(this, videoUrl, this)
         viewPager.adapter = adapter
 
@@ -65,13 +56,13 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
                 positionOffsetPixels: Int
             ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-
-                clickListnerViewPager(position)
+//                if (){
+//                    multiProgress.start(position)
+//                }
             }
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -84,9 +75,9 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
         Log.e("TAG", "onProgressStepChange: ")
         if (newStep == multiProgress.getProgressStepsCount()) {
             multiProgress.clear()
-
+            finish()
         }
-        multiProgress.setSingleDisplayTime(33F)
+        multiProgress.setSingleDisplayTime(5F)
         viewPager.currentItem = newStep
 
     }
@@ -96,28 +87,50 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
         finish()
     }
 
-    override fun videoPlayerPrepareOrNot(position: Int) {
-        multiProgress.start(position)
+    override fun videoPlayerPrepareOrNot() {
+        multiProgress.start(viewPager.currentItem)
+        Log.e("TAG", "videoPlayerPrepareOrNot pos:${viewPager.currentItem}")
     }
 
-    fun clickListnerViewPager(position: Int) {
+    private fun clickListenerViewPager() {
+
         viewForward.setOnClickListener {
+
             multiProgress.pause()
-            if (position + 1 == multiProgress.getProgressStepsCount()) {
+            if (viewPager.currentItem + 1 == multiProgress.getProgressStepsCount() || multiProgress.getCurrentStep() == multiProgress.getProgressStepsCount() - 1) {
                 finish()
             } else {
-                viewPager.setCurrentItem(position + 1, true)
-                if (multiProgress.getCurrentStep() < multiProgress.getProgressStepsCount() - 1) {
-                    multiProgress.next()
-                }
+                viewPager.setCurrentItem(viewPager.currentItem + 1, true)
+                multiProgress.next()
 
+                if (isImageUrl(videoUrl[viewPager.currentItem]))
+                    multiProgress.start(viewPager.currentItem)
             }
+            Log.e("TAG", "viewForward pos:${viewPager.currentItem}")
 
         }
         viewBackward.setOnClickListener {
-            multiProgress.pause()
-            viewPager.setCurrentItem(position - 1, true)
-            multiProgress.previous()
+
+            if (viewPager.currentItem == 0) {
+                finish()
+            } else {
+                multiProgress.pause()
+                viewPager.setCurrentItem(viewPager.currentItem - 1, true)
+                multiProgress.previous()
+                if (isImageUrl(videoUrl[viewPager.currentItem]))
+                    multiProgress.start(viewPager.currentItem)
+                Log.e("TAG", "viewBackward pos:${viewPager.currentItem}")
+            }
         }
+    }
+
+    fun isImageUrl(url: String): Boolean {
+        return url.contains(
+            ".jpg",
+            true
+        ) || url.contains(
+            ".png",
+            true
+        ) || url.contains(".jpeg", true)
     }
 }
