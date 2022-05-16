@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
             captureImage()
         }
 
-
         btnFlipImage.setOnClickListener {
             imageView.rotation = imageView.rotation + 90f
         }
