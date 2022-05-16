@@ -7,45 +7,51 @@
     tools:context=".MainActivity">
 
 
-
     <Button
         android:id="@+id/btnPickVideo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pick Video!"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-       />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:text="Hello World!"
         android:src="@drawable/shinchan"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Hello World!"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toBottomOf="@id/btnStartProgress"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageCapture"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="fitXY"
+        tools:src="@tools:sample/backgrounds/scenic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image"/>
 
     <Button
         android:id="@+id/btnFlipImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Flip Image"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    
+        app:layout_constraintStart_toEndOf="@id/btnCapture"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/showBottomSheet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="show bottom sheet"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/rvScrollBarStyle"
@@ -53,17 +59,39 @@
         android:layout_height="wrap_content"
         android:text="ScrollBar Style"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnFlipImage"/>
+        app:layout_constraintTop_toBottomOf="@id/btnFlipImage" />
 
     <Button
         android:id="@+id/btnStartProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start Progress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvScrollBarStyle"/>
+        app:layout_constraintStart_toEndOf="@id/rvScrollBarStyle"
+        app:layout_constraintTop_toBottomOf="@id/btnFlipImage" />
+
+    <Button
+        android:id="@+id/btnMirror"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mirror Effect"
+        app:layout_constraintStart_toEndOf="@id/btnStartProgress"
+        app:layout_constraintTop_toBottomOf="@id/btnFlipImage" />
+
+    <Button
+        android:id="@+id/btnCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capture"
+        app:layout_constraintStart_toEndOf="@id/showBottomSheet"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSaveImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+       app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvScrollBarStyle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
