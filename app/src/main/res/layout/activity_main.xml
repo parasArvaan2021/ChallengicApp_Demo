@@ -20,22 +20,22 @@
         android:id="@+id/image"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/shinchan"
         android:text="Hello World!"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@id/btnStartProgress"/>
+        app:layout_constraintTop_toBottomOf="@id/btnStartProgress" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageCapture"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:scaleType="fitXY"
-        tools:src="@tools:sample/backgrounds/scenic"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image"
+        tools:src="@tools:sample/backgrounds/scenic" />
 
     <Button
         android:id="@+id/btnFlipImage"
@@ -90,8 +90,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
-       app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rvScrollBarStyle" />
+
+    <Button
+        android:id="@+id/btnStory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Story"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

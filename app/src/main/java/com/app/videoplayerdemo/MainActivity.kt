@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -21,6 +20,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnMirror).setOnClickListener {
             val bm = (imageCapture.drawable as BitmapDrawable).bitmap
             Log.e("TAG", "onCreate: $bm")
-            imageCapture.setImageBitmap( createFlippedBitmap(bm, xFlip = true, yFlip = false))
+            imageCapture.setImageBitmap(createFlippedBitmap(bm, xFlip = true, yFlip = false))
 
         }
 
@@ -220,12 +220,9 @@ class MainActivity : AppCompatActivity() {
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val data = result.data
-                if (data != null) {
-                    Log.e("TAG", "path:${data.data}\n${photoFile?.absolutePath}")
-                }
-                val myBitmap = BitmapFactory.decodeFile(photoFile!!.absolutePath)
-                imageCapture.setImageBitmap(myBitmap)
+                Glide.with(this)
+                    .load(photoFile!!.absolutePath)
+                    .into(imageCapture)
             }
         }
 
