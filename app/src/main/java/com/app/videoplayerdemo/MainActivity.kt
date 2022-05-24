@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.rvScrollBarStyle).setOnClickListener {
             startActivity(Intent(this, ScrollBarStyleActivity::class.java))
         }
-
+        
         findViewById<Button>(R.id.btnCaptureVideo).setOnClickListener {
             startActivity(Intent(this, CaptureVideoAndPicActivity::class.java))
         }
