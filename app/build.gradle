@@ -59,6 +59,9 @@ dependencies {
     //videoplayer
     implementation 'com.github.HamidrezaAmz:MagicalExoPlayer:2.0.7'
 
+    //photoEditor
+    implementation 'com.burhanrashid52:photoeditor:2.0.0'
+    
 
 
 }

@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageCapture: AppCompatImageView
     private lateinit var btnFlipImage: Button
     private lateinit var showBottomSheet: Button
+
     var photoFile: File? = null
 
 
@@ -57,6 +58,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.rvScrollBarStyle).setOnClickListener {
             startActivity(Intent(this, ScrollBarStyleActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btnCaptureVideo).setOnClickListener {
+            startActivity(Intent(this, CaptureVideoAndPicActivity::class.java))
         }
 
         findViewById<Button>(R.id.btnStartProgress).setOnClickListener {

@@ -56,9 +56,7 @@ class ProgressBarActivity : AppCompatActivity(), MultiProgressBar.ProgressStepCh
                 positionOffsetPixels: Int
             ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-//                if (){
-//                    multiProgress.start(position)
-//                }
+
             }
 
             override fun onPageSelected(position: Int) {

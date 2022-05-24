@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VideoPlayerDemo"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".CaptureVideoAndPicActivity"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
