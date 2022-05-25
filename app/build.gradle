@@ -61,6 +61,10 @@ dependencies {
 
     //photoEditor
     implementation 'com.burhanrashid52:photoeditor:2.0.0'
+
+
+    //CameraView
+    implementation 'com.xlythe:camera-view:1.2.8'
     
 
 
