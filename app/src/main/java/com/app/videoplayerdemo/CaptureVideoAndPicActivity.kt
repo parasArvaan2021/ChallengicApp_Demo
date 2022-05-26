@@ -1,32 +1,37 @@
 package com.app.videoplayerdemo
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
-import android.os.Vibrator
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.app.videoplayerdemo.camerabutton.CameraVideoButton
 import com.xlythe.view.camera.CameraView
-import com.xlythe.view.camera.PermissionChecker
 import java.io.File
-import java.security.AccessController.getContext
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CaptureVideoAndPicActivity : AppCompatActivity() {
+class CaptureVideoAndPicActivity : AppCompatActivity(), CameraView.OnImageCapturedListener,
+    CameraView.OnVideoCapturedListener {
 
     lateinit var cameraView: CameraView
     private lateinit var videoRecordButton: CameraVideoButton
+    private lateinit var clPArent: ConstraintLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_capture_video_and_pic)
 
         cameraView = findViewById(R.id.cameraView)
+        clPArent = findViewById(R.id.clPArent)
 
+        cameraView.setOnImageCapturedListener(this)
+        cameraView.setOnVideoCapturedListener(this)
         cameraView.apply {
             if (ContextCompat.checkSelfPermission(
                     this@CaptureVideoAndPicActivity,
@@ -52,9 +57,9 @@ class CaptureVideoAndPicActivity : AppCompatActivity() {
                 }
             }
         }
-
         videoRecordButton = findViewById(R.id.videoRecordButton)
-        videoRecordButton.setVideoDuration(30000)
+        videoRecordButton.setVideoDuration(10000)
+        cameraView.maxVideoDuration=10000L
         videoRecordButton.enableVideoRecording(true)
         videoRecordButton.enablePhotoTaking(true)
 
@@ -62,21 +67,27 @@ class CaptureVideoAndPicActivity : AppCompatActivity() {
         videoRecordButton.actionListener = object : CameraVideoButton.ActionListener {
             override fun onStartRecord() {
                 Log.e("TEST", "Start recording video")
-//                cameraView.startRecording(saveImage(isImage = false))
+                cameraView.startRecording(
+                    createTempImageFile(
+                        this@CaptureVideoAndPicActivity,
+                        isImage = false
+                    )
+                )
             }
 
             override fun onEndRecord() {
                 Log.e("TEST", "onEndRecord: ")
-               cameraView.stopRecording()
+                cameraView.stopRecording()
+
             }
 
             override fun onDurationTooShortError() {
-//                Log.e("TEST", "Toast or notify user")
+                Log.e("TEST", "Toast or notify user")
             }
 
             override fun onSingleTap() {
                 Log.e("TEST", "onSingleTap: ")
-                cameraView.takePicture(saveImage(true))
+                cameraView.takePicture(createTempImageFile(this@CaptureVideoAndPicActivity, true))
 
             }
 
@@ -87,27 +98,52 @@ class CaptureVideoAndPicActivity : AppCompatActivity() {
 
     }
 
-    private fun saveImage(isImage: Boolean): File {
-        var savedImagePath: String? = null
-
-        // Create the new file in the external storage
+    @Throws(IOException::class)
+    fun createTempImageFile(context: Context, isImage: Boolean): File? {
         val timeStamp = SimpleDateFormat(
             "yyyyMMdd_HHmmss",
             Locale.getDefault()
         ).format(Date())
-        val imageFileName = if (isImage) "JPEG_$timeStamp.jpg" else "VIDEO_$timeStamp.mp4"
-        val storageDir = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                .toString() + "/MyCamera"
+        val imageFileName = if (isImage) "JPEG_" + timeStamp + "_" else "VIDEO_$timeStamp"
+        val storageDir: File? = context.externalCacheDir
+        return if (isImage) File.createTempFile(
+            imageFileName,  /* prefix */
+            ".jpg",  /* suffix */
+            storageDir /* directory */
+        ) else File.createTempFile(
+            imageFileName,  /* prefix */
+            ".mp4",  /* suffix */
+            storageDir /* directory */
         )
-        var success = true
-        if (!storageDir.exists()) {
-            success = storageDir.mkdirs()
-        }
-
-        return File(storageDir, imageFileName)
     }
 
+    override fun onImageConfirmation() {
+        Log.e("TAG", "onImageConfirmation: ")
+    }
 
+    override fun onImageCaptured(file: File?) {
+        Log.e("TAG", "onImageCaptured: $file")
+
+        startActivity(
+            Intent(this, PhotoEditingActivity::class.java)
+                .putExtra("IMAGE_PATH", file.toString())
+        )
+    }
+
+    override fun onVideoConfirmation() {
+        Log.e("TAG", "onVideoConfirmation: ")
+    }
+
+    override fun onVideoCaptured(file: File?) {
+        Log.e("TAG", "onVideoCaptured: $file")
+        startActivity(
+            Intent(this, PhotoEditingActivity::class.java)
+                .putExtra("IMAGE_PATH", file.toString())
+        )
+    }
+
+    override fun onFailure() {
+
+    }
 
 }

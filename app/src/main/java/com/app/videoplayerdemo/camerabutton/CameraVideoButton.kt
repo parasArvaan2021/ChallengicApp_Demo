@@ -243,7 +243,7 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
         } else if (isRecording) {
             actionListener?.onEndRecord()
         }
-
+        actionListener?.onEndRecord()
         resetRecordingValues()
     }
 
@@ -253,6 +253,8 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     private fun isRecordTooShort(startMillis: Long, endMillis: Long, minimumMillisRange: Long): Boolean {
+
+        Log.e("TAG", "isRecordTooShort: ${endMillis - startMillis < minimumMillisRange}")
         return endMillis - startMillis < minimumMillisRange
     }
 
