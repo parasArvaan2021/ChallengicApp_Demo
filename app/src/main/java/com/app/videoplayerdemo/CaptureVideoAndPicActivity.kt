@@ -142,8 +142,6 @@ class CaptureVideoAndPicActivity : AppCompatActivity(), CameraView.OnImageCaptur
         )
     }
 
-    override fun onFailure() {
-
-    }
+    override fun onFailure() {}
 
 }
