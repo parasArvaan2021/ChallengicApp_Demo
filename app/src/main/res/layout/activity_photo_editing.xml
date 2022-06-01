@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         tools:src="@tools:sample/backgrounds/scenic"
         android:scaleType="fitXY"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,5 +27,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnConvertImgToVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ConvertImageToVideo"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnShowPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Preview" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
