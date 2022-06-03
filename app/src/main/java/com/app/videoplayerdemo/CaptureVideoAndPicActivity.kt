@@ -59,7 +59,7 @@ class CaptureVideoAndPicActivity : AppCompatActivity(), CameraView.OnImageCaptur
         }
         videoRecordButton = findViewById(R.id.videoRecordButton)
         videoRecordButton.setVideoDuration(10000)
-        cameraView.maxVideoDuration=10000L
+        cameraView.maxVideoDuration = 10000L
         videoRecordButton.enableVideoRecording(true)
         videoRecordButton.enablePhotoTaking(true)
 
