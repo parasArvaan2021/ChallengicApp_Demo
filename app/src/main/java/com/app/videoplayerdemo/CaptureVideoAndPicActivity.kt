@@ -1,11 +1,15 @@
 package com.app.videoplayerdemo
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -50,11 +54,10 @@ class CaptureVideoAndPicActivity : AppCompatActivity(), CameraView.OnImageCaptur
                     ),
                     0
                 )
+
             } else {
-                cameraView.apply {
-                    open()
-                    /* takePicture(saveImage())*/
-                }
+                open()
+                /* takePicture(saveImage())*/
             }
         }
         videoRecordButton = findViewById(R.id.videoRecordButton)
@@ -143,5 +146,34 @@ class CaptureVideoAndPicActivity : AppCompatActivity(), CameraView.OnImageCaptur
     }
 
     override fun onFailure() {}
+
+    private var permissionRequestLancher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Log.e("TAG", "permission: ${result.data?.data}")
+
+            }
+        }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 0 && grantResults.isNotEmpty()) {
+            for (i in 0 until grantResults.size) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+//                    Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
+                    if(i==grantResults.size-1){
+                        cameraView.open()
+                    }
+                } else {
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
 }
