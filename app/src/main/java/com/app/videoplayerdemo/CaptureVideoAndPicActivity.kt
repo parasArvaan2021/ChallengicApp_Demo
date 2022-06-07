@@ -147,6 +147,7 @@ class CaptureVideoAndPicActivity : AppCompatActivity(), CameraView.OnImageCaptur
 
     override fun onFailure() {}
 
+
     private var permissionRequestLancher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
